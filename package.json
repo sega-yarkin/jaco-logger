@@ -1,0 +1,22 @@
+{
+	"name"       : "jaco-logger",
+	"version"    : "0.1.0",
+	"description": "Configurable logging tools",
+	"author": {
+		"name" : "Sergey I. Yarkin",
+		"email": "sega.yarkin@gmail.com"
+	},
+	"main": "./lib/index.js",
+	"bugs": {
+		"url"  : "http://github.com/sega-yarkin/jaco-logger/issues",
+		"email": "sega.yarkin@gmail.com"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url" : "http://github.com/sega-yarkin/jaco-logger.git"
+	},
+	"engines": {
+		"node": ">= 0.10.0"
+	}
+}
