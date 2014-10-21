@@ -1,0 +1,74 @@
+{
+	"name"   : "default",
+	"level"  : "debug",
+	"policy" : "everything",
+	"role"   : "any",
+	"exclude": [ "http.access*", { "cache*": "debug" } ],
+	"lang"   : "en",
+	"modules": true,
+	"format" : "text",
+	"events" : {
+		"start": "start-message"
+	},
+	"routes" : [
+		{
+			"name"     : "info-to-console",
+			"transport": "console",
+			"stream"   : "stderr",
+			"level"    : "info",
+			"exclude+" : [ "cache" ],
+			"format"   : "text",
+			"lang"     : "ru"
+		},
+		{
+			"name"     : "access-to-console",
+			"transport": "console",
+			"policy"   : "nothing",
+			"include"  : [ "http.access.storage*" ],
+			"tags"     : [ "console", "stdout" ],
+			"format"   : "access",
+			"events"   : {
+				"start": "start-message"
+			}
+		},
+		{
+			"name"     : "warn-to-applog",
+			"transport"  : "file",
+			"level"      : "warn",
+			"format"     : "json",
+			"json_fields": [ "date", "level", "msg" ],
+			"file_name"  : "./var/app.log",
+			"mode"       : "0644",
+			"stream"     : true,
+			"separate"   : false,
+			"reset_file" : false,
+			"master_ext" : "",
+			"worker_ext" : ".${wid|align(w=4,s=right,f=0)}",
+			"rotate"     : {
+				"size"  : "10m",
+				"every" : "day",
+				"at"    : "2h15m",
+				"suffix": "${date|format(f=YYYYMMdd-hhmmss)}",
+				"keep"  : 5,
+				"gzip"  : false,
+				"gzip_delay": false,
+				"before": [ "echo '${date} - ${file_name}' > ./var/rotates.log" ],
+				"after" : [ "gzip ${file_name}", "rm -f ${file_name}" ]
+			}
+		}
+	],
+	"formats": {
+		"start-message": "Hello!",
+		"access": ""
+	},
+	"levels"  : [ "debug", "info", "warn", "error", "crit" ],
+	"roles"   : [ "master", "worker" ],
+	"policies": [ "everything", "nothing" ],
+	"messages": {
+		"default": "en",
+		"en": {
+		},
+		"ru": {
+		}
+	}
+}
